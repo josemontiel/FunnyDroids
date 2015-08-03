@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FunnyActivity</string>
+    <string name="funny_activity_title">Here it goes...</string>
+    <string name="error_message">Sorry! I\'ll shut myself down.</string>
+    <string name="tts_languange_error">This Language is not supported</string>
+    <string name="tts_init_error">Initialization Failed!</string>
+</resources>

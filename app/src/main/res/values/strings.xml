@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Funny Droids</string>
+    <string name="app_name_free">Funny Droids Free</string>
+    <string name="button_text">Tell Joke</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="loading_text">Getting a Start-Up comedian…\n(Sorry! resistance was futile)</string>
+    <string name="error_message">Our droids have been captured by the Empire, please try again later.</string>
+    <string name="fab_instructions">Tap the button to request a droid</string>
+    <string name="knock_knock">Knock Knock</string>
+    <string name="loading">Loading</string>
+    <string name="desc_fab">Request a Joke</string>
+</resources>

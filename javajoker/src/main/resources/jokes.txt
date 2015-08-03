@@ -1,0 +1,22 @@
+{
+	jokes: [
+		'Wikipedia: I know everything!  Google: I have everything!  Facebook: I know everybody!  Internet: Without me you are nothing! Electricity: Keep talking bitches!',
+		'A wife send her husband an sms on a cold winter evening saying "Windows frozen". The husband send an answer back: "Pour some warm water over them". Some time later the husband receives an answer from his wife. "The computer is completely fucked now".',
+		'Where\'s the best place to hide a body? Page two of Google.',
+		'I changed my password to "incorrect". So whenever I forget what it is the computer will say "Your password is incorrect".',
+		'A system administrator has 2 problems: - dumb users and smart users',
+		'In the 21st century Deleting history is more important than making it.',
+		'My wifi suddenly stop working, then I realized that my neighbors have not paid the bill.  How irresponsible people are.',
+		'Question, How many programmers does it take to change a light bulb?. None, that\'s a hardware problem.',
+		'"Knock, knock. Who\'s there?" [very long pause] "Java."',
+		'A Man from the toilet shouts to his wife : Darling, darling, do you hear me?!. What happened, did you run out of toilet paper?. No, restart the router, please!',
+		'If at first you don\'t succeed, call it version 1.0.',
+		'There are 2 types of people in the world. Those that can extrapolate from incomplete data',
+		'Funny facts about Google users: 50% of people use Google well as a search engine. The rest 50% of them use it to check if their internet is connected',
+		'I love pressing F5. It\'s so refreshing.',
+		'How do two programmers make money? One writes viruses, the other anti-viruses.',
+		'Error, no keyboard. Press F1 to continue.',
+		'To the optimist, the glass is half-full.  To the pessimist, the glass is half-empty.  To the IT professional, the glass is twice as big as it needs to be.',
+		'The Internet: where men are men, women are men, and children are the FBI...'
+	]
+}
