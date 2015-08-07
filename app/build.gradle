@@ -30,11 +30,9 @@ android {
     }
     productFlavors {
         free {
-            applicationId 'com.udacity.gradle.builditbigger.free'
             buildConfigField 'boolean', 'IS_PAID', 'false'
         }
         paid {
-            applicationId 'com.udacity.gradle.builditbigger.paid'
             buildConfigField 'boolean', 'IS_PAID', 'true'
         }
     }
