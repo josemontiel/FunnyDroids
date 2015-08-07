@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.funnydroids;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,13 @@ import android.widget.Toast;
 
 import com.engtoolsdev.funnyactivity.FunnyActivity;
 import com.engtoolsdev.jose.funnyapp.backend.funnyApi.FunnyApi;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.udacity.gradle.builditbigger.R;
 
 import java.io.IOException;
 
@@ -29,6 +31,7 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
+    private InterstitialAd mInterstitialAd;
     private FunnyApi funnyEndpoint;
     private CompositeSubscription mSubscriptions;
 
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         fabInstructionsTextView = findViewById(R.id.fab_instructions);
         progressLayout = findViewById(R.id.progress_layout);
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+
+        requestNewInterstitial();
 
         setUpEndpoint();
 
@@ -134,11 +141,53 @@ public class MainActivity extends AppCompatActivity {
 
                         showProgress(false);
 
-                        Intent intent = new Intent(MainActivity.this, FunnyActivity.class);
-                        intent.putExtra(FunnyActivity.EXTRA_JOKE, joke);
-                        startActivity(intent);
+                        //If Interstitial Ad is loaded, show it and then start FunnyActivity. If not loaded, start FunnyActivity
+                        if (mInterstitialAd.isLoaded()) {
+                            mInterstitialAd.show();
+                            mInterstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    super.onAdClosed();
+                                    requestNewInterstitial();
+                                    Intent intent = new Intent(MainActivity.this, FunnyActivity.class);
+                                    intent.putExtra(FunnyActivity.EXTRA_JOKE, joke);
+                                    startActivity(intent);
+                                }
+                            });
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, FunnyActivity.class);
+                            intent.putExtra(FunnyActivity.EXTRA_JOKE, joke);
+                            startActivity(intent);
+                        }
 
 
+                    }
+                });
+
+        mSubscriptions.add(subscription);
+    }
+
+    /**
+     * Pings backend
+     */
+    public void knock(){
+
+        Subscription subscription = AppObservable.bindActivity(this, knockBackend())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, e.getMessage());
+                        Toast.makeText(MainActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(final String joke) {
+                        Toast.makeText(MainActivity.this, joke, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -168,36 +217,6 @@ public class MainActivity extends AppCompatActivity {
         })
                 .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io());
-
-    }
-
-    /**
-     * Pings backend
-     */
-    public void knock(){
-
-        Subscription subscription = AppObservable.bindActivity(this, knockBackend())
-                .subscribe(new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.e(e, e.getMessage());
-                        Toast.makeText(MainActivity.this, R.string.error_message, Toast.LENGTH_SHORT).show();
-                        showProgress(false);
-                    }
-
-                    @Override
-                    public void onNext(final String joke) {
-                        showProgress(false);
-                        Toast.makeText(MainActivity.this, joke, Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        mSubscriptions.add(subscription);
     }
 
     /**
@@ -223,6 +242,17 @@ public class MainActivity extends AppCompatActivity {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
+    }
+
+    /**
+     * Requests a new Interstitial Ad from AdMob
+     */
+    private void requestNewInterstitial() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mInterstitialAd.loadAd(adRequest);
     }
 
     /**

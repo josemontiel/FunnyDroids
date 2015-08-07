@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.udacity.gradle.funnydroids;
 
 import android.support.multidex.MultiDexApplication;
 
