@@ -1,5 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
@@ -18,3 +17,47 @@ allprojects {
         mavenCentral()
     }
 }
+
+
+task runAppEngineAndTest (dependsOn: [":funnybackend:appengineRun", ":app:connectedAndroidTest", ":funnybackend:appengineStop"]) {
+
+    group = "Nanodegree"
+    description = 'Starts the App Engine instance, runs connected tests and stops App Engine'
+
+    evaluationDependsOn(":funnybackend")
+    evaluationDependsOn(":app")
+
+    project(":funnybackend") {
+        appengine{
+            daemon = true
+        }
+
+        tasks.appengineRun {
+            doFirst{
+                println 'Starting App Engine'
+            }
+
+            doLast {
+                println 'App Engine Running'
+            }
+        }
+
+        tasks.appengineStop {
+            doLast {
+                println 'Stopping App Engine'
+            }
+        }
+    }
+
+    project(":app"){
+        tasks.connectedAndroidTest.mustRunAfter ":funnybackend:appengineRun"
+        tasks.connectedAndroidTest.finalizedBy ":funnybackend:appengineStop"
+
+        tasks.connectedAndroidTest << {
+            println 'Running Android Tests'
+        }
+    }
+
+}
+
+
